@@ -70,4 +70,28 @@ class User extends Authenticatable
             'year_of_birth' => 'integer',
         ];
     }
+
+    /**
+     * Get the full name attribute.
+     */
+    public function getNameAttribute()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
+
+    /**
+     * Get the callback requests for the user.
+     */
+    public function callbackRequests()
+    {
+        return $this->hasMany(\App\Models\CallbackRequest::class);
+    }
+
+    /**
+     * Get the activity logs for the user.
+     */
+    public function activityLogs()
+    {
+        return $this->hasMany(\App\Models\ActivityLog::class);
+    }
 }

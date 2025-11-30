@@ -19,13 +19,33 @@ class AdminUserController extends Controller
         $totalAdmins = User::where('is_admin', true)->count();
         $googleUsers = User::where('auth_provider', 'google')->count();
         $emailUsers = User::where('auth_provider', 'email')->count();
+        
+        // Phase 2 statistics
+        $totalCompanies = \App\Models\Company::count();
+        $totalPlans = \App\Models\Plan::count();
+        $totalCallbacks = \App\Models\CallbackRequest::count();
+        $totalAds = \App\Models\Ad::count();
+        $totalQuestionnaires = \App\Models\Questionnaire::count();
+        
+        // Recent data
+        $recentUsers = User::latest()->limit(5)->get();
+        $latestCallbacks = \App\Models\CallbackRequest::with(['user', 'company'])->latest()->limit(5)->get();
+        $recentActivities = \App\Models\ActivityLog::with('user')->latest()->limit(10)->get();
 
         return view('admin.dashboard', compact(
             'totalUsers',
             'verifiedUsers',
             'totalAdmins',
             'googleUsers',
-            'emailUsers'
+            'emailUsers',
+            'totalCompanies',
+            'totalPlans',
+            'totalCallbacks',
+            'totalAds',
+            'totalQuestionnaires',
+            'recentUsers',
+            'latestCallbacks',
+            'recentActivities'
         ));
     }
 

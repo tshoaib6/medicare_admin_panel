@@ -98,5 +98,14 @@ class DatabaseSeeder extends Seeder
             'is_decision_maker' => true,
             'has_medicare_part_b' => true,
         ]);
+
+        // Seed Phase 2 data
+        $this->call([
+            CompanySeeder::class,
+            PlanSeeder::class,
+            QuestionnaireSeeder::class,
+            AdSeeder::class,
+            ActivityLogSeeder::class,
+        ]);
     }
 }
