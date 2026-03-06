@@ -133,7 +133,7 @@ class QuestionnaireController extends Controller
     {
         $questions = $questionnaire->questions()
             ->with('options')
-            ->orderBy('order_index')
+            ->orderBy('order_number')
             ->get();
         
         return response()->json([
@@ -152,15 +152,15 @@ class QuestionnaireController extends Controller
             'question_text' => 'required|string',
             'question_type' => 'required|in:single_choice,multiple_choice,text,textarea,number,email,date,yes_no',
             'is_required' => 'boolean',
-            'order_index' => 'nullable|integer|min:1',
+            'order_number' => 'nullable|integer|min:1',
             'options' => 'required_if:question_type,single_choice,multiple_choice|array',
             'options.*.label' => 'required_with:options|string',
             'options.*.value' => 'nullable|string'
         ]);
         
-        // Set order index if not provided
-        if (!isset($validated['order_index'])) {
-            $validated['order_index'] = $questionnaire->questions()->max('order_index') + 1;
+        // Set order number if not provided
+        if (!isset($validated['order_number'])) {
+            $validated['order_number'] = $questionnaire->questions()->max('order_number') + 1;
         }
         
         $question = $questionnaire->questions()->create($validated);

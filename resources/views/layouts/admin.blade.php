@@ -128,6 +128,14 @@
                 </a>
             </li>
 
+            <!-- Nav Item - Questionnaire Responses -->
+            <li class="nav-item {{ request()->routeIs('admin.questionnaire-responses.*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.questionnaire-responses.index') }}">
+                    <i class="fas fa-fw fa-poll-h"></i>
+                    <span>Responses</span>
+                </a>
+            </li>
+
             <!-- Divider -->
             <hr class="sidebar-divider">
 

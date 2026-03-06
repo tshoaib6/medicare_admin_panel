@@ -55,6 +55,13 @@ Route::prefix('v1')->group(function () {
         Route::get('/my/activities', [App\Http\Controllers\Api\ActivityLogController::class, 'myActivities']);
         Route::post('/activities/log', [App\Http\Controllers\Api\ActivityLogController::class, 'log']);
         
+        // User Questionnaire Responses
+        Route::get('/my/questionnaire-responses', [App\Http\Controllers\Api\QuestionnaireResponseController::class, 'myResponses']);
+        Route::post('/questionnaires/{questionnaire}/start', [App\Http\Controllers\Api\QuestionnaireResponseController::class, 'start']);
+        Route::post('/questionnaire-responses/{questionnaireResponse}/answers', [App\Http\Controllers\Api\QuestionnaireResponseController::class, 'submitAnswers']);
+        Route::post('/questionnaire-responses/{questionnaireResponse}/complete', [App\Http\Controllers\Api\QuestionnaireResponseController::class, 'complete']);
+        Route::get('/questionnaire-responses/{questionnaireResponse}', [App\Http\Controllers\Api\QuestionnaireResponseController::class, 'show']);
+        
         // Admin Only Routes (require admin privileges)
         Route::middleware('admin')->group(function () {
             // Companies Management
@@ -99,6 +106,10 @@ Route::prefix('v1')->group(function () {
             Route::get('/users/{user}', [App\Http\Controllers\Api\UserController::class, 'show']);
             Route::patch('/users/{user}/toggle-admin', [App\Http\Controllers\Api\UserController::class, 'toggleAdmin']);
             Route::delete('/users/{user}', [App\Http\Controllers\Api\UserController::class, 'destroy']);
+            
+            // Questionnaire Responses Management (Admin)
+            Route::get('/questionnaire-responses', [App\Http\Controllers\Api\QuestionnaireResponseController::class, 'index']);
+            Route::get('/questionnaire-responses/stats', [App\Http\Controllers\Api\QuestionnaireResponseController::class, 'stats']);
         });
     });
 });

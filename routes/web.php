@@ -79,6 +79,14 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     Route::get('activity-logs/{id}', [App\Http\Controllers\Admin\ActivityLogController::class, 'show'])->name('admin.activity-logs.show');
     Route::get('activity-logs-export', [App\Http\Controllers\Admin\ActivityLogController::class, 'export'])->name('admin.activity-logs.export');
     
+    // Questionnaire Responses Management
+    Route::resource('questionnaire-responses', App\Http\Controllers\Admin\QuestionnaireResponseController::class, [
+        'as' => 'admin',
+        'only' => ['index', 'show', 'destroy']
+    ]);
+    Route::get('questionnaire-responses-stats', [App\Http\Controllers\Admin\QuestionnaireResponseController::class, 'stats'])->name('admin.questionnaire-responses.stats');
+    Route::get('questionnaire-responses-export', [App\Http\Controllers\Admin\QuestionnaireResponseController::class, 'export'])->name('admin.questionnaire-responses.export');
+    
     // Settings
     Route::get('settings', function () {
         return view('admin.settings.index');
