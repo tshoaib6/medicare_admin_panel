@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CompanyResource;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -27,7 +28,7 @@ class CompanyController extends Controller
         
         return response()->json([
             'success' => true,
-            'data' => $companies,
+            'data' => CompanyResource::collection($companies),
             'message' => 'Companies retrieved successfully'
         ]);
     }
@@ -51,7 +52,7 @@ class CompanyController extends Controller
         
         return response()->json([
             'success' => true,
-            'data' => $company,
+            'data' => new CompanyResource($company),
             'message' => 'Company created successfully'
         ], 201);
     }
@@ -62,10 +63,11 @@ class CompanyController extends Controller
     public function show(Company $company): JsonResponse
     {
         $company->load(['plans', 'callbackRequests']);
+        $company->loadCount(['plans', 'callbackRequests']);
         
         return response()->json([
             'success' => true,
-            'data' => $company,
+            'data' => new CompanyResource($company),
             'message' => 'Company retrieved successfully'
         ]);
     }
@@ -89,7 +91,7 @@ class CompanyController extends Controller
         
         return response()->json([
             'success' => true,
-            'data' => $company->fresh(),
+            'data' => new CompanyResource($company->fresh()),
             'message' => 'Company updated successfully'
         ]);
     }
