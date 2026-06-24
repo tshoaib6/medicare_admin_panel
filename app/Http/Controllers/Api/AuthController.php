@@ -83,7 +83,10 @@ class AuthController extends Controller
             ], 422);
         }
 
-        $user = User::where('phone_number', $request->phone_number)->first();
+        // Normalize: strip all non-digit characters for flexible matching
+        $digitsOnly = preg_replace('/\D/', '', $request->phone_number);
+
+        $user = User::whereRaw("REGEXP_REPLACE(phone_number, '[^0-9]', '') = ?", [$digitsOnly])->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
